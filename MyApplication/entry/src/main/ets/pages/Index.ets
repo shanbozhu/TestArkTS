@@ -33,11 +33,11 @@ struct RowExample {
       }.width('90%').border({ width: 1 }).justifyContent(FlexAlign.End).height(80)
 
       // 父视图未设置高度时，子视图会充满，子视图高度就是父视图高度
-      Text('justifyContent(Center)').width('90%').border({ width: 1, color: 0x0000FF})
+      Text('5-justifyContent(Center)').width('90%').border({ width: 1, color: 0x0000FF})
       Row() {
         Row().width('30%').height(70).backgroundColor(0xAFEEEE)
         Row().width('30%').height(100).backgroundColor(0x00FFFF)
       }.width('60%').border({ width: 1 }).justifyContent(FlexAlign.Center)
-    }.width('100%').border({ width: 1 }).borderColor(0xFF0000)
+    }.width('100%').border({ width: 1 }).borderColor(0xFF0000).alignItems(HorizontalAlign.Start)
   }
 }
