@@ -1,52 +1,83 @@
-import { inputMethod } from '@kit.IMEKit';
+
 
 @Entry
 @Component
-export struct CustomInput {
-  @State inputText: string = ''; // inputText作为Text组件要显示的内容。
-  private inputController: inputMethod.InputMethodController = inputMethod.getController();
+struct AddLog {
 
   build() {
-    Text(this.inputText) // Text组件作为自会编辑框的文本显示组件。
-      .fontSize(16)
-      .width('100%')
-      .lineHeight(40)
-      // .id('customInput')
-      .height(45)
-      .border({ color: '#554455', radius: 30, width: 1 })
-      .maxLines(1)
-      .onClick(()=>{
-        this.attachAndListener(); // 点击控件
-      })
-  }
+    Row() {
+      Column() {
+        Text('click me')
+          .fontSize(50)
+          .onClick(() => {
 
-  async attachAndListener() { // 绑定和设置监听
-    // focusControl.requestFocus('CustomInput');
-    await this.inputController.attach(true, {
-      inputAttribute: {
-        textInputType: inputMethod.TextInputType.TEXT,
-        enterKeyType: inputMethod.EnterKeyType.SEARCH
+            // let name1 = null;
+            // let name2 = undefined;
+            //
+            // // 测试 null 和 undefined
+            // if (name1) {
+            //   console.log(`1111 ${name1}`);
+            // }
+            // if (name1 != undefined) {
+            //   console.log(`1111 ${name1} != undefined`);
+            // }
+            // if (name1 !== undefined) {
+            //   console.log(`1111 ${name1} !== undefined`);
+            // }
+            // if (name1 == undefined) {
+            //   console.log(`1111 ${name1} == undefined`);
+            // }
+            // if (name1 === undefined) {
+            //   console.log(`1111 ${name1} === undefined`);
+            // }
+            //
+            // // 测试 undefined 和 null
+            // if (name2) {
+            //   console.log(`1111 ${name2}`);
+            // }
+            // if (name2 != null) {
+            //   console.log(`1111 ${name2} != null`);
+            // }
+            // if (name2 !== null) {
+            //   console.log(`1111 ${name2} !== null`);
+            // }
+            // if (name2 == null) {
+            //   console.log(`1111 ${name2} == null`);
+            // }
+            // if (name2 === null) {
+            //   console.log(`1111 ${name2} === null`);
+            // }
+
+            console.log('1111', null == undefined) // 1111 true
+            console.log('1111', null === undefined); // 1111 false
+            console.log('1111', undefined); // 1111 undefined
+            console.log('1111', null); // 1111 null
+            console.log('1111', !undefined); // 1111 true
+            console.log('1111', !null); // 1111 true
+            console.log('1111', undefined === true); // 1111 false
+            console.log('1111', null === true);  // 1111 false
+            console.log('1111', undefined === false); // 1111 false
+            console.log('1111', null === false);  // 1111 false
+            console.log('1111', (undefined) ? true : false); // 1111 false
+            console.log('1111', (null) ? true : false);  // 1111 false
+
+            let obj: string = '';
+            // 所以判断对象是否存在
+            if (obj != null) {
+            }
+            // 或
+            if (obj != undefined) {
+            }
+            // 所以判断对象是否不存在
+            if (!obj) {
+            }
+            // 所以判断对象等于某个值
+            if (obj === null) {
+            }
+          })
       }
-    });
-    this.inputController.on('insertText', (text) => {
-      this.inputText += text;
-    })
-    this.inputController.on('deleteLeft', (length) => {
-      this.inputText = this.inputText.substring(0, this.inputText.length - length);
-    })
-    this.inputController.on('sendKeyboardStatus', (text) => {
-      console.log('length', text);
-    })
-    this.inputController.on('sendFunctionKey', (length) => {
-      console.log('length', length);
-    })
-    this.inputController.on('handleExtendAction', (length) => {
-      console.log('length', length);
-    })
-    this.inputController.on('getTextIndexAtCursor', (): number => {
-      console.log('length')
-      return 0;
-    })
-
+      .width('100%')
+    }
+    .height('100%')
   }
 }
