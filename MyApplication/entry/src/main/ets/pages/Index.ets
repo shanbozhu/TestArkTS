@@ -104,6 +104,8 @@ struct ViewA {
 
   fn(): Promise<string> {
     return new Promise<string>((resolve: Function, reject: Function) => {
+      // 保存成私有成员变量，同时增加一个强引用
+      console.log('111111--1');
       resolve('111111--1');
     }).then((value) => {
       // value = '111111--1';
