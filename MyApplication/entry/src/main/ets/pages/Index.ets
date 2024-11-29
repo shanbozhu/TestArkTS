@@ -123,12 +123,10 @@ struct ViewA {
     }).then((value) => {
       console.log('111111--5', value); // 微任务
     });
-
     // 宏任务的执行顺序并不是基于定义的先后，而是基于触发时间。即使某个任务先添加到队列中，但它未到触发时间，事件循环会先执行那些已经到触发时间的任务。
     setTimeout(() => {
       console.log('111111--3'); // 宏任务
     }, 50);
-
     console.log('111111--2'); // 同步代码
   }
 
@@ -138,11 +136,9 @@ struct ViewA {
     }).then((value) => {
       console.log('111111--3', value);
     });
-
     setTimeout(() => {
       console.log('111111--4');
     }, 0);
-
     console.log('111111--2');
   }
 
