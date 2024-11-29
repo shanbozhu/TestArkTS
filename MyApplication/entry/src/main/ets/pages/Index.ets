@@ -13,6 +13,7 @@ struct ViewA {
             // value = 'value';
             console.log('111111--4', value);
           });
+          // console.log('111111--2'); 是同步代码，优先于微任务执行。
           console.log('111111--2');
         })
 
@@ -50,6 +51,16 @@ struct ViewA {
             console.log('111111--3', value);
           });
           console.log('111111--2', response);
+        })
+
+      Button('increase count 5')
+        .onClick(() => {
+          let response = this.fn5();
+        })
+
+      Button('increase count 6')
+        .onClick(() => {
+          let response = this.fn6();
         })
     }
   }
@@ -102,10 +113,55 @@ struct ViewA {
     });
   }
 
+  fn5() {
+    new Promise<string>((resolve: Function) => {
+      console.log('111111--1'); // 宏任务
+      setTimeout(() => {
+        console.log('111111--4'); // 宏任务
+        resolve('111111--4');
+      }, 3000);
+    }).then((value) => {
+      console.log('111111--5', value); // 微任务
+    });
+
+    // 宏任务的执行顺序并不是基于定义的先后，而是基于触发时间。即使某个任务先添加到队列中，但它未到触发时间，事件循环会先执行那些已经到触发时间的任务。
+    setTimeout(() => {
+      console.log('111111--3'); // 宏任务
+    }, 50);
+
+    console.log('111111--2'); // 同步代码
+  }
+
+  fn6() {
+    new Promise<string>((resolve, reject) => {
+      resolve('111111--1');
+    }).then((value) => {
+      console.log('111111--3', value);
+    });
+
+    setTimeout(() => {
+      console.log('111111--4');
+    }, 0);
+
+    console.log('111111--2');
+  }
+
   fn(): Promise<string> {
     return new Promise<string>((resolve: Function, reject: Function) => {
       // 保存成私有成员变量，同时增加一个强引用
       console.log('111111--1');
+      // 将 Promise 状态置为 resolved，并将 .then() 中的回调任务排入微任务队列。
+      // 将then中传入的block加入微任务队列，微任务队列中的任务会在当前所有同步任务执行完毕后、下一次事件循环开始前执行。
+      // Promise 的回调是微任务，而微任务的执行总是在当前同步任务执行完毕之后进行。
+      // JavaScript 是单线程语言，主线程会优先执行同步代码。
+      // 异步操作（包括 Promise 的 .then() 回调）被放入队列等待主线程空闲时再处理。
+      // resolve 的执行会立即改变 Promise 的状态，但不会立即触发 .then() 回调。
+      // .then() 回调是微任务，它会在当前同步代码执行完毕后再执行。
+      // 每完成一个宏任务后，JavaScript 引擎会先清空微任务队列，再开始下一个宏任务。
+      // 事件循环规则 决定了同步代码优先于异步代码执行，异步代码再分为微任务和宏任务，微任务优先于宏任务执行。
+      // JavaScript 的事件循环分为宏任务（macrotask）和微任务（microtask）：
+      // 宏任务：setTimeout、setInterval、I/O 操作等。
+      // 微任务：Promise.then、MutationObserver 等。
       resolve('111111--1');
     }).then((value) => {
       // value = '111111--1';
